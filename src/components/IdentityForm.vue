@@ -47,7 +47,7 @@
 
 <script>
 export default {
-  name: 'Form',
+  name: 'IdentityForm',
   props: {
     data: Object
   },
