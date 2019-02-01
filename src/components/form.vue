@@ -52,7 +52,6 @@ export default {
     data: Object
   },
   mounted() {
-    console.log(this.$refs.date)
     this.$refs.date[0].max = new Date().toISOString().split("T")[0];
 
   }
