@@ -1,28 +1,58 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Header :data="data.header"/>
+    <Form :data="data.form"/>
+    <Footer :data="data.footer"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Header from './components/Header.vue'
+import Form from './components/Form.vue'
+import Footer from './components/Footer.vue'
+import data from './assets/data.json'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
-  }
+    Header,
+    Form,
+    Footer
+  },
+  data() {
+    return {
+      data,
+    }
+  },
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+  @import './assets/style/global';
+  *{
+    box-sizing: border-box;
+  }
+  html, body{
+    margin:0;
+    padding: 0;
+    overflow: hidden;
+    position: fixed;
+    /*height: 100vh;*/
+  }
+  h1, h2, h3, h4, h5, h6, p{
+    margin:0;
+  }
+  #app {
+    font-family: 'Quicksand', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    color: $primary;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
 </style>

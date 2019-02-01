@@ -1,0 +1,52 @@
+{
+  "header": {
+    "title": "Welcome to the <span>new generation</span>",
+    "description": "What an exiting time ! Baby is finally born. Is there a better way to celebrate his birth and existence than a customized health booklet cover ?"
+  },
+  "form": {
+    "title": "Get your <span>baby identity</span>",
+    "subtitle": "Each design is as unique as your child. Fill the form and let the magic happen.",
+    "inputs": [
+      {
+        "name": "first-name",
+        "label": "What's your baby's first name?",
+        "placeholder": "Name",
+        "type": "text"
+      },
+      {
+        "name": "last-name",
+        "label": "And last name ?",
+        "placeholder": "Last name",
+        "type": "text"
+      },
+      {
+        "name": "date",
+        "label": "Date of birth ?",
+        "placeholder": "DD / MM / YYYY",
+        "type": "date"
+      },
+      {
+        "name": "hour",
+        "label": "At what time ?",
+        "placeholder": "hh:mm",
+        "type": "time"
+      },
+      {
+        "name": "height",
+        "label": "What height ? (in cm)",
+        "placeholder": "height in centimeters",
+        "type": "number"
+      },
+      {
+        "name": "weight",
+        "label": "What weight ? (in kg)",
+        "placeholder": "weight in kilograms",
+        "type": "number"
+      }
+    ]
+  },
+  "footer": {
+    "left": ["About", "Contact"],
+    "right": ["Login", "Sign up"]
+  }
+}
