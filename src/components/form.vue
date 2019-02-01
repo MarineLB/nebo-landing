@@ -87,6 +87,9 @@ export default {
       color: $secondary;
     }
   }
+  .identity-form__subtitle{
+    font-weight: 400;
+  }
   .identity-form__content{
     display: grid;
     grid-template-columns: 1fr 1fr;

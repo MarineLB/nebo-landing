@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import Header from './components/Header.vue'
-import Form from './components/Form.vue'
-import Footer from './components/Footer.vue'
+import Header from './components/Header'
+import Form from './components/Form'
+import Footer from './components/Footer'
 import data from './assets/data.json'
 
 export default {
@@ -49,6 +49,7 @@ export default {
     margin: 0;
     padding: 0;
     font-size: 16px;
+    font-weight: 500;
     color: $primary;
     width: 100vw;
     height: 100vh;
