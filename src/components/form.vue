@@ -31,14 +31,14 @@
         </div>
       </div>
       <div class="identity-form__illustration">
-        <img src="./assets/illustration.svg">
+        <img src="@/assets/illustration.svg">
       </div>
     </div>
     <div class="identity-form__footer">
       <button
         type="submit"
         class="identity-form__input identity-form__submit">
-        <img src="./assets/gift.svg">
+        <img src="@/assets/gift.svg">
         Generate my identity
       </button>
     </div>
