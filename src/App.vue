@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import Header from './components/Header'
-import Form from './components/Form'
-import Footer from './components/Footer'
+import Header from './components/Header.vue'
+import Form from './components/Form.vue'
+import Footer from './components/Footer.vue'
 import data from './assets/data.json'
 
 export default {
