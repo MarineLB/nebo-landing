@@ -36,23 +36,34 @@ export default {
   @import '../assets/style/global';
 
   .footer{
-    margin: 3rem 80px 0;
+    margin: -3rem 40px 0;
     border-top:1px solid $lightgrey;
     padding: 40px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    text-align: center;
+
+    @media (min-width: 768px) {
+      margin: 3rem 80px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-align: left;
+    }
   }
   .footer__link{
-    display: inline-block;
     font-weight: 500;
     color: $grey;
-    .footer__main &{
-      margin-right: 2rem;
+    margin-bottom:1rem;
+    @media (min-width: 768px) {
+      display: inline-block;
+      margin-bottom: 0;
+      .footer__main &{
+        margin-right: 2rem;
+      }
+      .footer__secondary &{
+        margin-left: 2rem;
+      }
     }
-    .footer__secondary &{
-      margin-left: 2rem;
-    }
+
   }
   .footer__logo{
     color: $primary;

@@ -1,8 +1,11 @@
 <template>
   <div id="app">
     <Header :data="data.header"/>
-    <IdentityForm :data="data.form"/>
-    <Footer :data="data.footer"/>
+    <div class="content">
+      <IdentityForm :data="data.form"/>
+      <Footer :data="data.footer"/>
+    </div>
+
   </div>
 </template>
 
@@ -55,5 +58,9 @@ export default {
     height: 100vh;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
+  }
+  .content{
+    position: relative;
+    background: $white;
   }
 </style>

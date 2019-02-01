@@ -31,14 +31,14 @@
         </div>
       </div>
       <div class="identity-form__illustration">
-
+        <img src="@/assets/illustration.svg" alt="illustration"/>
       </div>
     </div>
     <div class="identity-form__footer">
       <button
         type="submit"
         class="identity-form__input identity-form__submit">
-
+        <img src="@/assets/gift.svg" alt="gift"/>
         Generate my identity
       </button>
     </div>
@@ -64,13 +64,16 @@ export default {
   .identity-form{
     max-width: 840px;
     border-radius: 2rem;
-    padding:60px 60px;
+    padding:60px 30px;
     margin:0 auto;
     position: relative;
     top:-27vh;
     z-index:2;
     background: $white;
     box-shadow: $lightgrey 0 30px 80px;
+    @media (min-width: 768px) {
+      padding:60px 60px;
+    }
 
   }
   .identity-form__header{
@@ -81,7 +84,10 @@ export default {
   .identity-form__title{
     margin-top:0;
     margin-bottom:.5rem;
-    font-size: 36px;
+    font-size: 25px;
+    @media (min-width: 768px) {
+      font-size: 36px;
+    }
     span{
       color: $secondary;
     }
@@ -90,8 +96,11 @@ export default {
     font-weight: 400;
   }
   .identity-form__content{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    
+    @media (min-width: 768px) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
   }
   .identity-form__input-wrapper{
     margin-top:1rem;
@@ -112,14 +121,20 @@ export default {
     border-radius: 10px;
     color: $primary;
     font-weight: 500;
-    min-width: 300px;
+    width: 300px;
+    max-width: 100%;
     font-size:0.9rem;
     outline:none;
     font-family:inherit;
   }
   .identity-form__illustration{
-    position: relative;
-    right:-60px;
+    display: none;
+    @media (min-width: 768px) {
+      display: block;
+      position: relative;
+      right:-60px;
+    }
+    
   }
   .identity-form__submit{
     margin-top: 2rem;
@@ -128,11 +143,13 @@ export default {
     background: $accent;
     border-color: $accent;
     color: $white;
-    min-width: 0;
     cursor: pointer;
     transition: background .3s ease-out;
     &:hover{
       background: darken($accent, 5%);
+    }
+    @media (min-width: 768px) {
+      width: auto;
     }
 
   }

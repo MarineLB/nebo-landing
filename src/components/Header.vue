@@ -34,9 +34,12 @@ export default {
   $header-height: 120vh;
   .header{
     background: $secondary;
-    padding:40px 80px;
+    padding:20px 40px;
     height:$header-height;
     /*position: relative;*/
+    @media (min-width: 768px) {
+      padding:40px 80px;
+    }
   }
   .header__logo{
     position: fixed;
@@ -54,11 +57,19 @@ export default {
     left:50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
+    padding:20px 40px;
+    width:100%;
+    @media (min-width: 768px) {
+      padding:40px 80px;
+    }
   }
   .header__title{
-    font-size:70px;
+    font-size:38px;
     line-height: 1.13;
     margin-bottom: 1rem;
+    @media (min-width: 768px) {
+      font-size:70px;
+    }
     span{
       color: $white;
       display: block;
