@@ -10,7 +10,7 @@
         class="shape"
         v-for="shape in 7"
         :src="require(`@/assets/shapes/shape${shape}.svg`)"
-        :style="`top: ${getTop()}px; left: ${getLeft()}px`"
+        :style="`top: ${getTop(shape)}px; left: ${getLeft(shape)}px`"
         alt="shape">
     </div>
     <div class="header__content">
@@ -41,11 +41,21 @@ export default {
     },
   },
   methods: {
-    getTop() {
-      return Math.floor(Math.random() * this.windowHeight) -100
+    getTop(el) {
+      if(Math.floor(Math.random() * 2+1) % 2 === 0) {
+        console.log(el)
+        return Math.floor(Math.random() * this.windowHeight / 4) - 20
+      } else {
+        return Math.floor(Math.random() * this.windowHeight) + this.windowHeight/2
+      }
+
     },
-    getLeft() {
-      return Math.floor(Math.random() * this.windowWidth) -100
+    getLeft(el) {
+      if(Math.floor(Math.random() * 2+1) % 2 === 0) {
+        return Math.floor(Math.random() * this.windowWidth /4) -20
+      } else {
+        return Math.floor(Math.random() * this.windowWidth ) + this.windowWidth/2
+      }
     }
   }
 }
@@ -69,6 +79,7 @@ export default {
     color: $white;
     font-weight: bold;
     font-size: 1.2rem;
+    z-index:2;
     span{
       color: $primary
     }
