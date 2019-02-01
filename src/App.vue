@@ -1,14 +1,14 @@
 <template>
   <div id="app">
     <Header :data="data.header"/>
-    <!--<Form :data="data.form"/>-->
+    <Form :data="data.form"/>
     <Footer :data="data.footer"/>
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
-//import Form from './components/Form.vue'
+import Form from './components/Form.vue'
 import Footer from './components/Footer.vue'
 import data from './assets/data.json'
 
@@ -16,7 +16,7 @@ export default {
   name: 'app',
   components: {
     Header,
-//    Form,
+    Form,
     Footer
   },
   data() {

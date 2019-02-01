@@ -48,12 +48,11 @@
 <script>
 export default {
   name: 'Form',
-  props:{
+  props: {
     data: Object
   },
   mounted() {
     this.$refs.date[0].max = new Date().toISOString().split("T")[0];
-
   }
 }
 </script>
