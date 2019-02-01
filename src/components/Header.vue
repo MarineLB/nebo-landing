@@ -4,6 +4,15 @@
     <div class="header__logo">
       <p>Neb<span>ö</span></p>
     </div>
+    <div class="header__background">
+      <!-- todo : add background + shapes + parallax-->
+      <img
+        class="shape"
+        v-for="shape in 7"
+        :src="require(`@/assets/shapes/shape${shape}.svg`)"
+        :style="`top: ${getTop()}px; left: ${getLeft()}px`"
+        alt="shape">
+    </div>
     <div class="header__content">
       <h1
         class="header__title"
@@ -12,9 +21,7 @@
         class="header__description"
         v-html="data.description"></p>
     </div>
-    <div class="header__background">
-      <!-- todo : add background + shapes + parallax-->
-    </div>
+
 
   </header>
 </template>
@@ -23,7 +30,23 @@
 export default {
   name: 'Header',
   props:{
-    data: Object
+    data: Object,
+  },
+  computed:{
+    windowHeight() {
+      return process.browser ? window.innerHeight : 0
+    },
+    windowWidth() {
+      return process.browser ? window.innerWidth : 0
+    },
+  },
+  methods: {
+    getTop() {
+      return Math.floor(Math.random() * this.windowHeight) -100
+    },
+    getLeft() {
+      return Math.floor(Math.random() * this.windowWidth) -100
+    }
   }
 }
 </script>
@@ -79,5 +102,15 @@ export default {
     margin:0 auto;
     max-width:520px;
     color:$white;
+  }
+  .header__background{
+    /*position: relative;*/
+    height:100%;
+    width:100%;
+  }
+  .shape{
+    pointer-events: none;
+    position: absolute;
+    z-index: 0;
   }
 </style>
