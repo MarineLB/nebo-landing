@@ -55,8 +55,5 @@
   "footer": {
     "left": ["About", "Contact"],
     "right": ["Login", "Sign up"]
-  },
-  "colors": {
-
   }
 }

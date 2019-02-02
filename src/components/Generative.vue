@@ -1,6 +1,10 @@
 <template>
   <div class="generative-identity">
     <div ref="canvas" class="canvas"></div>
+    <div class="generative-identity__footer">
+      <button
+        class="generative-identity__button">Save as png</button>
+    </div>
     <div class="data">
       <hr>
       <h2>data</h2>
@@ -10,7 +14,9 @@
       time of birth : {{ baby.time }}<br>
       height : {{ baby.height }} (cm)<br>
       weight : {{ baby.weight }} (kg)<br>
+      {{ uniqueSeed }}<br>
     </div>
+
   </div>
 </template>
 
@@ -24,24 +30,38 @@ export default {
   data() {
     return {
       data: data.generative,
+      baby: {},
+      bigString: '',
+      uniqueSeed: '',
       ps: null,
+      p: null,
       script: null,
       canvas: null,
       width: null,
       height: null,
+      colorPalette: {
+        background: '#FC97A9',
+        shapes: ['#FFFFFF', '#F4DC22', '#312E96']
+      },
+      weights: [3, 4],
+      fill: [true, false],
+      seed: null,
+
 //      baby: {}
     }
   },
-  computed: {
-    baby() {
-      return this.$route.query
-    },
-  },
   mounted() {
+    this.baby = this.$route.query;
+//    this.getUniqueString();
+//    this.bigString = this.createSeed(this.bigString);
     this.initP5();
     this.loadScripts();
   },
   methods: {
+    getUniqueString() {
+      this.bigString = this.baby['first-name'] + this.baby['last-name'] + this.baby['date'] + this.baby['time'] + this.baby['height'] + this.baby['weight'];
+      this.bigString.replace(/-/g, '');
+    },
     initP5(){
       this.script = p => {
         this.getSize();
@@ -67,17 +87,42 @@ export default {
     setup(p) {
       this.canvas = p.createCanvas(this.width, this.height)
       this.canvas.parent(this.$refs.canvas)
+
       p.noLoop();
     },
     draw(p){
-      p.background(0)
-      p.fill(255)
-      p.rect(this.x, this.y, 50, 50)
+      // todo : make a unique number out of the data, get a seed
+
+      // todo : get a colorPalette
+      p.background(this.colorPalette.background)
+
+      // todo : select shapes and draw them
+      this.createSeed(p, 'first-name');
+      this.drawSquare(p, p.random(this.width), p.random(this.height), 50);
+    },
+    drawSquare(p, x, y, s){
+      p.push()
+        p.stroke(this.colorPalette.shapes[2])
+        p.fill(this.colorPalette.background)
+        p.strokeWeight(this.weights[1])
+        p.rect(x, y, s, s, 8)
+      p.pop()
     },
     loadScripts(){
       const P5 = require('p5');
       this.ps = new P5(this.script);
-    }
+    },
+    /* transform each character by its ASCII code
+     * gives us a number */
+    createSeed(p, param) {
+      param = this.baby[param];
+      let seed = '';
+      for (var i = 0; i < param.length; i++) {
+        seed += param.charCodeAt(i) + ''
+      }
+      p.randomSeed(Number(seed));
+    },
+
   }
 }
 </script>
@@ -89,5 +134,35 @@ export default {
   .canvas{
     width:100%;
     text-align: center;
+  }
+  .generative-identity__footer{
+    text-align: center;
+  }
+  .data{
+    overflow: hidden;
+  }
+  .generative-identity__button{
+    border: 1px solid $accent;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 500;
+    width: 300px;
+    max-width: 100%;
+    font-size:0.9rem;
+    outline:none;
+    font-family:inherit;
+    background: $accent;
+    color: $white;
+    cursor: pointer;
+    transition: background .3s ease-out;
+    margin-top:2rem;
+    margin-bottom: 1rem;
+
+    &:hover{
+      background: darken($accent, 5%);
+    }
+    @media (min-width: 768px) {
+      width: auto;
+    }
   }
 </style>
