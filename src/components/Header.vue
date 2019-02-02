@@ -2,7 +2,7 @@
   <header
     class="header">
     <div class="header__logo">
-      <p>Neb<span>ö</span></p>
+      <router-link to="/">Neb<span>ö</span></router-link>
     </div>
     <div class="header__background">
       <!-- todo : add background + shapes + parallax-->
@@ -76,10 +76,15 @@ export default {
   }
   .header__logo{
     position: fixed;
-    color: $white;
     font-weight: bold;
     font-size: 1.2rem;
     z-index:2;
+
+    a{
+      color: $white;
+      text-decoration: none;
+    }
+
     span{
       color: $primary
     }
