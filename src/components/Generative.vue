@@ -46,8 +46,14 @@ export default {
       weights: [3, 4],
       fill: [true, false],
       seed: null,
+      font: null,
 
 //      baby: {}
+    }
+  },
+  computed:{
+    fontUrl() {
+      return require('../assets/Quicksand.ttf')
     }
   },
   mounted() {
@@ -65,6 +71,10 @@ export default {
     initP5(){
       this.script = p => {
         this.getSize();
+
+        p.preload = _ => {
+          this.preload(p);
+        }
 
         p.setup = _ => {
           this.setup(p);
@@ -84,6 +94,9 @@ export default {
         this.width = this.height / 1.415;
       }
     },
+    preload(p){
+      this.font = p.loadFont(this.fontUrl);
+    },
     setup(p) {
       this.canvas = p.createCanvas(this.width, this.height)
       this.canvas.parent(this.$refs.canvas)
@@ -96,9 +109,39 @@ export default {
       // todo : get a colorPalette
       p.background(this.colorPalette.background)
 
+
+
       // todo : select shapes and draw them
       this.createSeed(p, 'first-name');
       this.drawSquare(p, p.random(this.width), p.random(this.height), 50);
+
+      // drawing last so that it's above everything
+      this.drawNameBlock(p);
+    },
+    drawNameBlock(p) {
+      var rect = {
+        y: this.height*0.28,
+        width: this.width*0.4,
+        height: this.height*0.13,
+        radius: this.width*0.04
+      }
+      p.push()
+      p.strokeWeight(0)
+      p.fill(255)
+      p.rect(this.width - rect.width, rect.y, rect.width, rect.height, rect.radius, 0, 0, rect.radius)
+      var options = { year: 'numeric', month: 'long', day: 'numeric' };
+      let name = this.baby['first-name'] + " " + this.baby['last-name'];
+      let date = new Date(this.baby.date).toLocaleDateString("en-US", options);
+      date = 'Born ' + date;
+      p.push()
+        p.textFont(this.font);
+        p.strokeWeight(0)
+        p.fill(this.colorPalette.shapes[2]);
+        p.textSize(rect.width / 10);
+        p.text(name, this.width-rect.width + (rect.width / 8), rect.y + rect.height/3.5, 200, 100);
+        p.textSize(rect.width / 17);
+        p.text(date, this.width-rect.width + (rect.width / 8), rect.y + rect.height/1.75, 200, 100);
+      p.pop();
     },
     drawSquare(p, x, y, s){
       p.push()
