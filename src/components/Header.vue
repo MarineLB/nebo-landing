@@ -9,6 +9,7 @@
       <img
         class="shape"
         v-for="shape in 7"
+        :key="shape"
         :src="require(`@/assets/shapes/shape${shape}.svg`)"
         :style="`top: ${getTop(shape)}px; left: ${getLeft(shape)}px`"
         alt="shape">
@@ -41,16 +42,15 @@ export default {
     },
   },
   methods: {
-    getTop(el) {
+    getTop() {
       if(Math.floor(Math.random() * 2+1) % 2 === 0) {
-        console.log(el)
         return Math.floor(Math.random() * this.windowHeight / 4) - 20
       } else {
         return Math.floor(Math.random() * this.windowHeight) + this.windowHeight/2
       }
 
     },
-    getLeft(el) {
+    getLeft() {
       if(Math.floor(Math.random() * 2+1) % 2 === 0) {
         return Math.floor(Math.random() * this.windowWidth /4) -20
       } else {

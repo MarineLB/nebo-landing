@@ -1,5 +1,6 @@
 <template>
   <form
+    @submit.prevent="checkForm"
     class="identity-form">
     <div class="identity-form__header">
       <h2
@@ -25,6 +26,7 @@
             :ref="input.name"
             :name="input.name"
             :type="input.type"
+            v-model="form[input.name]"
             :placeholder="input.placeholder"
             required
           />
@@ -46,13 +48,39 @@
 </template>
 
 <script>
+import data from '../assets/data.json'
+
 export default {
   name: 'IdentityForm',
-  props: {
-    data: Object
+
+  data() {
+    return {
+      data: data.form,
+      form: {}
+    }
   },
   mounted() {
-    this.$refs.date[0].max = new Date().toISOString().split("T")[0];
+    this.$refs.date[0].max = this.getToday();
+    this.$refs.date[0].valueAsDate = new Date();
+  },
+  methods: {
+    checkForm(e) {
+      this.$router.push({ path: 'generated', query: this.form });
+    },
+    getToday() {
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth()+1; //January is 0!
+      var yyyy = today.getFullYear();
+      if(dd<10) {
+        dd = '0'+dd
+      }
+      if(mm<10) {
+        mm = '0'+mm
+      }
+      today = yyyy + '-' + mm + '-' + dd;
+      return today;
+    }
   }
 }
 </script>
@@ -62,18 +90,6 @@ export default {
   @import '../assets/style/global';
 
   .identity-form{
-    max-width: 840px;
-    border-radius: 2rem;
-    padding:60px 30px;
-    margin:0 auto;
-    position: relative;
-    top:-27vh;
-    z-index:2;
-    background: $white;
-    box-shadow: $lightgrey 0 30px 80px;
-    @media (min-width: 768px) {
-      padding:60px 60px;
-    }
 
   }
   .identity-form__header{

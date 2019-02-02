@@ -1,25 +1,26 @@
 <template>
   <div id="app">
-    <Header :data="data.header"/>
-    <div class="content">
-      <IdentityForm :data="data.form"/>
-      <Footer :data="data.footer"/>
+    <div class="page">
+      <Header :data="headerData"/>
+      <div class="content">
+        <div class="card">
+          <router-view></router-view>
+        </div>
+        <Footer :data="data.footer"/>
+      </div>
     </div>
-
   </div>
 </template>
 
 <script>
-import Header from './components/Header.vue'
-import IdentityForm from './components/IdentityForm.vue'
-import Footer from './components/Footer.vue'
-import data from './assets/data.json'
+  import Header from './components/Header.vue'
+  import Footer from './components/Footer.vue'
+  import data from './assets/data.json'
 
 export default {
   name: 'app',
   components: {
     Header,
-    IdentityForm,
     Footer
   },
   data() {
@@ -27,10 +28,22 @@ export default {
       data,
     }
   },
+  methods: {
+
+  },
+  computed: {
+    showForm() {
+      return this.$route.path === '/';
+    },
+    headerData() {
+      return this.showForm ? this.data['header'] : this.data['generative-header']
+    }
+  },
 }
 </script>
 
 <style lang="scss">
+  @import url('https://fonts.googleapis.com/css?family=Quicksand:400,500,700');
   @import './assets/style/global';
   *{
     box-sizing: border-box;
@@ -62,5 +75,20 @@ export default {
   .content{
     position: relative;
     background: $white;
+  }
+  .card{
+    max-width: 840px;
+    border-radius: 2rem;
+    padding:60px 30px;
+    margin:0 auto;
+    position: relative;
+    top:-27vh;
+    min-height: 35vh;
+    z-index:2;
+    background: $white;
+    box-shadow: $lightgrey 0 30px 80px;
+    @media (min-width: 768px) {
+      padding:60px 60px;
+    }
   }
 </style>

@@ -3,6 +3,10 @@
     "title": "Welcome to the <span>new generation</span>",
     "description": "What an exiting time ! Baby is finally born. Is there a better way to celebrate his birth and existence than a customized health booklet cover ?"
   },
+  "generative-header": {
+    "title": "Wonderful ! <span>Baby's booklet is ready</span>",
+    "description": ""
+  },
   "form": {
     "title": "Get your <span>baby identity</span>",
     "subtitle": "Each design is as unique as your child. Fill the form and let the magic happen.",
@@ -26,7 +30,7 @@
         "type": "date"
       },
       {
-        "name": "hour",
+        "name": "time",
         "label": "At what time ?",
         "placeholder": "hh:mm",
         "type": "time"
@@ -45,8 +49,14 @@
       }
     ]
   },
+  "generative": {
+
+  },
   "footer": {
     "left": ["About", "Contact"],
     "right": ["Login", "Sign up"]
+  },
+  "colors": {
+
   }
 }
