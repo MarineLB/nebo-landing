@@ -111,6 +111,7 @@ export default {
     },
     draw(p){
       // todo : create master seed with prenom + nom
+      this.createMasterSeed(p);
 
       // todo : generate a colorPalette from master seed
       p.background(this.colorPalette.background)
@@ -120,13 +121,8 @@ export default {
 
       // todo : select shapes and draw them
       this.drawSquare(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
-      this.drawSquare(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
-      this.drawSquare(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
       this.drawCircle(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
-      this.drawCircle(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
-      this.drawCircle(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
-      this.drawCircle(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
-//      this.drawArc(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
+      this.drawArc(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
 
 
       // drawing last so that it's above everything
@@ -213,12 +209,22 @@ export default {
       const color = this.colorPalette.shapes[p.floor(p.random(this.nbColors))];
       const size = p.random(this.minSize, this.maxSize);
       const strokeWeight = size / this.weight;
-      const length = p.floor(p.random(2)) === 1 ? p.HALF_PI : p.PI
+      const length = p.floor(p.random(2)) === 1 ? 90 : 180;
+      const isFull = p.floor(p.random(2)) === 1;
+      const angle = p.random(-90, 90);
 
       p.push()
-        p.fill(color);
-        p.strokeWeight(strokeWeight)
+        if(isFull) {
+          p.fill(color);
+          p.strokeWeight(0)
+        } else {
+          p.fill(this.colorPalette.background);
+          p.stroke(color)
+          p.strokeWeight(strokeWeight)
+        }
         p.translate(x, y)
+        p.rotate(angle)
+        p.ellipseMode(p.CENTER)
         p.arc(0, 0, size, size, 0, length)
       p.pop()
     },
@@ -228,6 +234,14 @@ export default {
     },
     /* transform each character by its ASCII code
      * gives us a number */
+    createMasterSeed(p){
+      let seed = '';
+      const param = this.baby['first-name'] + this.baby['last-name'];
+      for (var i = 0; i < param.length; i++) {
+        seed += param.charCodeAt(i) + ''
+      }
+      p.randomSeed(Number(seed));
+    },
     createSeed(p, param) {
       param = this.baby[param];
       let seed = '';
@@ -236,6 +250,9 @@ export default {
       }
       p.randomSeed(Number(seed));
     },
+    getRandom(p) {
+
+    }
 
   }
 }
