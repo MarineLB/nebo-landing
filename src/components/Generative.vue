@@ -43,7 +43,7 @@ export default {
         background: '#FC97A9',
         shapes: ['#FFFFFF', '#F4DC22', '#312E96']
       },
-      weights: [3, 4],
+      weight: 6, // bigger number === smaller weight
       fill: [true, false],
       seed: null,
       font: null,
@@ -54,6 +54,15 @@ export default {
   computed:{
     fontUrl() {
       return require('../assets/Quicksand.ttf')
+    },
+    minSize() {
+      return this.width/25;
+    },
+    maxSize() {
+      return this.width/5;
+    },
+    nbColors() {
+      return this.colorPalette.shapes.length;
     }
   },
   mounted() {
@@ -64,10 +73,6 @@ export default {
     this.loadScripts();
   },
   methods: {
-    getUniqueString() {
-      this.bigString = this.baby['first-name'] + this.baby['last-name'] + this.baby['date'] + this.baby['time'] + this.baby['height'] + this.baby['weight'];
-      this.bigString.replace(/-/g, '');
-    },
     initP5(){
       this.script = p => {
         this.getSize();
@@ -100,20 +105,29 @@ export default {
     setup(p) {
       this.canvas = p.createCanvas(this.width, this.height)
       this.canvas.parent(this.$refs.canvas)
+      p.angleMode(p.DEGREES)
 
       p.noLoop();
     },
     draw(p){
-      // todo : make a unique number out of the data, get a seed
+      // todo : create master seed with prenom + nom
 
-      // todo : get a colorPalette
+      // todo : generate a colorPalette from master seed
       p.background(this.colorPalette.background)
 
+      // todo : replace random() to generate random with a random seed from this.baby (depending on master seed)
 
 
       // todo : select shapes and draw them
-      this.createSeed(p, 'first-name');
-      this.drawSquare(p, p.random(this.width), p.random(this.height), 50);
+      this.drawSquare(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
+      this.drawSquare(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
+      this.drawSquare(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
+      this.drawCircle(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
+      this.drawCircle(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
+      this.drawCircle(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
+      this.drawCircle(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
+//      this.drawArc(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
+
 
       // drawing last so that it's above everything
       this.drawNameBlock(p);
@@ -143,12 +157,69 @@ export default {
         p.text(date, this.width-rect.width + (rect.width / 8), rect.y + rect.height/1.75, 200, 100);
       p.pop();
     },
-    drawSquare(p, x, y, s){
+    drawSquare(p, x, y){
+      const color = this.colorPalette.shapes[p.floor(p.random(this.nbColors))];
+      const size = p.random(this.minSize, this.maxSize);
+      const radius = size*0.15;
+      const strokeWeight = size / this.weight;
+      const fill = p.floor(p.random(2)) === 1 ? this.colorPalette.background : color ;
+      const hasInner = p.floor(p.random(2)) === 1;
+      const angle = p.random(-90, 90);
+      // drawing main square
+
       p.push()
-        p.stroke(this.colorPalette.shapes[2])
+        p.stroke(color)
+        p.strokeWeight(strokeWeight)
+        p.translate(x, y)
+        p.rotate(angle)
+        p.rectMode(p.CENTER)
+
+        if (hasInner) {
+          p.fill(this.colorPalette.background)
+        } else {
+          p.fill(fill)
+        }
+        p.rect(0, 0, size, size, radius)
+        if (hasInner) {
+          p.rect(0, 0, size/2.5, size/2.5, radius/2.5)
+        }
+      p.pop()
+    },
+    drawCircle(p, x, y){
+      const color = this.colorPalette.shapes[p.floor(p.random(this.nbColors))];
+      const size = p.random(this.minSize, this.maxSize);
+      const strokeWeight = size / this.weight;
+      const fill = p.floor(p.random(2)) === 1 ? this.colorPalette.background : color ;
+      const hasInner = p.floor(p.random(2)) === 1;
+
+      p.push()
+      p.stroke(color)
+      p.strokeWeight(strokeWeight)
+      p.translate(x, y)
+      p.rectMode(p.CENTER)
+
+      if (hasInner) {
         p.fill(this.colorPalette.background)
-        p.strokeWeight(this.weights[1])
-        p.rect(x, y, s, s, 8)
+      } else {
+        p.fill(fill)
+      }
+      p.ellipse(0, 0, size, size)
+      if (hasInner) {
+        p.ellipse(0, 0, size/2.5, size/2.5)
+      }
+      p.pop()
+    },
+    drawArc(p, x, y) {
+      const color = this.colorPalette.shapes[p.floor(p.random(this.nbColors))];
+      const size = p.random(this.minSize, this.maxSize);
+      const strokeWeight = size / this.weight;
+      const length = p.floor(p.random(2)) === 1 ? p.HALF_PI : p.PI
+
+      p.push()
+        p.fill(color);
+        p.strokeWeight(strokeWeight)
+        p.translate(x, y)
+        p.arc(0, 0, size, size, 0, length)
       p.pop()
     },
     loadScripts(){

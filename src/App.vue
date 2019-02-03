@@ -76,13 +76,15 @@ export default {
     position: relative;
     background: $white;
   }
+  .header + .content .card{
+    top:-27vh;
+  }
   .card{
     max-width: 840px;
     border-radius: 2rem;
     padding:60px 30px;
     margin:0 auto;
     position: relative;
-    top:-27vh;
     min-height: 35vh;
     z-index:2;
     background: $white;
