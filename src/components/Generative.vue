@@ -148,6 +148,8 @@ export default {
           this.drawCircle(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
         case 'line':
           this.drawLine(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
+        case 'grid':
+          this.drawGrid(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
         case 'arc': default:
           this.drawArc(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
       }
@@ -258,7 +260,7 @@ export default {
       const strokeWeight = this.getStroke(size);
       const angle = this.getAngle(p);
       const quantity = this.getRandom(p, 2, 3);
-      
+
       for (let i = 0; i < quantity; i++) {
         p.push();
         p.stroke(color);
@@ -269,6 +271,25 @@ export default {
         p.rotate(90);
         p.line(0, 0, size, size);
         p.pop();
+      }
+    },
+    drawGrid(p, x, y) {
+      const color = this.getColor(p);
+      const size = this.returnSize(p) / 2;
+      const strokeWeight = this.getStroke(size);
+      const angle = this.getAngle(p);
+      const height = this.getRandom(p, 2, 4);
+
+      for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < height; j++) {
+          p.push();
+          p.noFill();
+          p.stroke(color);
+          p.strokeWeight(strokeWeight);
+          p.translate(x + (i * size), y + (j * size));
+          p.rect(0, 0, size, size);
+          p.pop();
+        }
       }
     },
     loadScripts(){
