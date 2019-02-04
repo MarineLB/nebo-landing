@@ -120,9 +120,9 @@ export default {
 
 
       // todo : select shapes and draw them
-      this.drawSquare(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
-      this.drawCircle(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
-      this.drawArc(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
+      this.drawSquare(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
+      this.drawCircle(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
+      this.drawArc(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
 
 
       // drawing last so that it's above everything
@@ -154,13 +154,13 @@ export default {
       p.pop();
     },
     drawSquare(p, x, y){
-      const color = this.colorPalette.shapes[p.floor(p.random(this.nbColors))];
-      const size = p.random(this.minSize, this.maxSize);
+      const color = this.colorPalette.shapes[p.floor(this.getRandom(p, 0, this.nbColors))];
+      const size = this.getRandom(p, this.minSize, this.maxSize);
       const radius = size*0.15;
       const strokeWeight = size / this.weight;
-      const fill = p.floor(p.random(2)) === 1 ? this.colorPalette.background : color ;
-      const hasInner = p.floor(p.random(2)) === 1;
-      const angle = p.random(-90, 90);
+      const fill = p.floor(this.getRandom(p, 0, 2)) === 1 ? this.colorPalette.background : color ;
+      const hasInner = p.floor(this.getRandom(p, 0, 2)) === 1;
+      const angle = this.getRandom(p, -90, 90);
       // drawing main square
 
       p.push()
@@ -250,10 +250,15 @@ export default {
       }
       p.randomSeed(Number(seed));
     },
-    getRandom(p) {
-
+    /* creates a random seed from the params in baby */
+    getRandom(p, min, max) {
+      const keys = Object.keys(this.baby)
+      const randomParamIndex = p.floor(p.random(keys.length))
+      const randomParam = keys[randomParamIndex];
+      console.log(randomParam)
+      this.createSeed(p, randomParam);
+      return p.random(min, max)
     }
-
   }
 }
 </script>
