@@ -113,6 +113,8 @@ export default {
       // todo : create master seed with prenom + nom
       this.createMasterSeed(p);
 
+      this.createPalette(p);
+
       // todo : generate a colorPalette from master seed
       p.background(this.colorPalette.background)
 
@@ -258,6 +260,25 @@ export default {
       console.log(randomParam)
       this.createSeed(p, randomParam);
       return p.random(min, max)
+    },
+    createPalette(p) {
+      this.colorPalette.background = this.randomColor(p);
+      this.colorPalette.shapes.forEach((color) => {
+        color = this.randomColor(p);
+      });
+    },
+    randomColor(p) {
+      const hsl = `
+        hsl(
+          ${this.flr(p, 0, 330)},
+          ${this.flr(p, 90, 100)}%,
+          ${this.flr(p, 75, 95)}%)
+        `
+      ;
+      return hsl;
+    },
+    flr(p, min, max) {
+      return p.floor(p.random(min, max));
     }
   }
 }
