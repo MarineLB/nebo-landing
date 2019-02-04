@@ -136,16 +136,15 @@ export default {
       this.drawNameBlock(p);
     },
     randomShape(i, p) {
-      const currentShape = this.flr(p, 0, this.shapeList.length);
+      const currentShape = this.getRandom(p, 0, this.shapeList.length);
       const shapeName = this.shapeList[currentShape];
-      console.log(shapeName);
       switch (shapeName) {
         case 'square':
-          this.drawSquare(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
+          this.drawSquare(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
         case 'circle': 
-          this.drawCircle(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
+          this.drawCircle(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
         case 'arc': default:
-          this.drawArc(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
+          this.drawArc(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
       }
     },
     drawNameBlock(p) {
@@ -260,7 +259,6 @@ export default {
       for (var i = 0; i < param.length; i++) {
         seed += param.charCodeAt(i) + ''
       }
-      console.log(seed);
       p.randomSeed(Number(seed));
     },
     createSeed(p, param) {
@@ -276,14 +274,13 @@ export default {
       const keys = Object.keys(this.baby)
       const randomParamIndex = p.floor(p.random(keys.length))
       const randomParam = keys[randomParamIndex];
-      console.log(randomParam)
       this.createSeed(p, randomParam);
-      return p.random(min, max)
+      return p.floor(p.random(min, max));
     },
     createPalette(p) {
       this.colorPalette.background = this.randomColor(p);
-      this.colorPalette.shapes.forEach((color) => {
-        color = this.randomColor(p);
+      this.colorPalette.shapes.forEach((color, index) => {
+        this.colorPalette.shapes[index] = this.randomColor(p);
       });
     },
     randomColor(p) {
