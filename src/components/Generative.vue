@@ -29,24 +29,30 @@ export default {
   },
   data() {
     return {
-      data: data.generative,
       baby: {},
       bigString: '',
-      uniqueSeed: '',
-      ps: null,
-      p: null,
-      script: null,
       canvas: null,
-      width: null,
-      height: null,
       colorPalette: {
         background: '#FC97A9',
         shapes: ['#FFFFFF', '#F4DC22', '#312E96']
       },
-      weight: 6, // bigger number === smaller weight
+      data: data.generative,
       fill: [true, false],
-      seed: null,
       font: null,
+      height: null,
+      p: null,
+      ps: null,
+      script: null,
+      shapeList: [
+        'square',
+        'circle',
+        'arc'
+      ],
+      shapeQuantity: 3,
+      seed: null,
+      uniqueSeed: '',
+      weight: 6, // bigger number === smaller weight
+      width: null,
 
 //      baby: {}
     }
@@ -122,13 +128,25 @@ export default {
 
 
       // todo : select shapes and draw them
-      this.drawSquare(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
-      this.drawCircle(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
-      this.drawArc(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
-
+      for (let i = 0; i <= this.shapeQuantity; i++) {
+        this.randomShape(i, p);
+      }
 
       // drawing last so that it's above everything
       this.drawNameBlock(p);
+    },
+    randomShape(i, p) {
+      const currentShape = this.flr(p, 0, this.shapeList.length);
+      const shapeName = this.shapeList[currentShape];
+      console.log(shapeName);
+      switch (shapeName) {
+        case 'square':
+          this.drawSquare(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
+        case 'circle': 
+          this.drawCircle(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
+        case 'arc': default:
+          this.drawArc(p, p.random(this.width*0.1, this.width*0.9), p.random(this.height*0.1, this.height*0.9));
+      }
     },
     drawNameBlock(p) {
       var rect = {
@@ -242,6 +260,7 @@ export default {
       for (var i = 0; i < param.length; i++) {
         seed += param.charCodeAt(i) + ''
       }
+      console.log(seed);
       p.randomSeed(Number(seed));
     },
     createSeed(p, param) {
