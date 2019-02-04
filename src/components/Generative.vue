@@ -21,7 +21,9 @@
 </template>
 
 <script>
-  import data from '../assets/data.json'
+import getContrastRatio from 'get-contrast-ratio'
+import data from '../assets/data.json'
+
 export default {
   name: 'Generative',
   props: {
@@ -48,7 +50,7 @@ export default {
         'circle',
         'arc'
       ],
-      shapeQuantity: 3,
+      shapeQuantity: 14,
       seed: null,
       uniqueSeed: '',
       weight: 6, // bigger number === smaller weight
@@ -128,16 +130,17 @@ export default {
 
 
       // todo : select shapes and draw them
-      for (let i = 0; i <= this.shapeQuantity; i++) {
-        this.randomShape(i, p);
+      for (let i = 0; i < this.shapeQuantity; i++) {
+        this.randomShape(p);
       }
 
       // drawing last so that it's above everything
       this.drawNameBlock(p);
     },
-    randomShape(i, p) {
+    randomShape(p) {
       const currentShape = this.getRandom(p, 0, this.shapeList.length);
       const shapeName = this.shapeList[currentShape];
+      console.log(shapeName);
       switch (shapeName) {
         case 'square':
           this.drawSquare(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
@@ -280,17 +283,24 @@ export default {
     createPalette(p) {
       this.colorPalette.background = this.randomColor(p);
       this.colorPalette.shapes.forEach((color, index) => {
-        this.colorPalette.shapes[index] = this.randomColor(p);
+        this.colorPalette.shapes[index] = this.randomColor(p, true);
       });
     },
-    randomColor(p) {
-      const hsl = `
-        hsl(
+    randomColor(p, check = false) {
+      let hsl = `hsl(
           ${this.flr(p, 0, 330)},
           ${this.flr(p, 90, 100)}%,
-          ${this.flr(p, 75, 95)}%)
-        `
-      ;
+          ${this.flr(p, 75, 95)}%)`;
+      if (check) {
+        let ratio;
+        do {
+          hsl = `hsl(
+            ${this.flr(p, 0, 330)},
+            ${this.flr(p, 90, 100)}%,
+            ${this.flr(p, 75, 95)}%)`;
+          ratio = getContrastRatio(this.colorPalette.background, hsl);
+        } while (ratio < 1.2);
+      }
       return hsl;
     },
     flr(p, min, max) {
