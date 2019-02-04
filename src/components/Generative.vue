@@ -48,7 +48,8 @@ export default {
       shapeList: [
         'square',
         'circle',
-        'arc'
+        'arc',
+        'line',
       ],
       shapeQuantity: 14,
       seed: null,
@@ -140,12 +141,13 @@ export default {
     randomShape(p) {
       const currentShape = this.getRandom(p, 0, this.shapeList.length);
       const shapeName = this.shapeList[currentShape];
-      console.log(shapeName);
       switch (shapeName) {
         case 'square':
           this.drawSquare(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
         case 'circle': 
           this.drawCircle(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
+        case 'line':
+          this.drawLine(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
         case 'arc': default:
           this.drawArc(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
       }
@@ -250,6 +252,25 @@ export default {
         p.arc(0, 0, size, size, 0, length)
       p.pop()
     },
+    drawLine(p, x, y) {
+      const color = this.getColor(p);
+      const size = this.returnSize(p) / 2;
+      const strokeWeight = this.getStroke(size);
+      const angle = this.getAngle(p);
+      const quantity = this.getRandom(p, 2, 3);
+      
+      for (let i = 0; i < quantity; i++) {
+        p.push();
+        p.stroke(color);
+        p.strokeWeight(strokeWeight);
+        p.strokeCap(p.ROUND);
+        p.translate(x + (i * (size * 2)), y);
+        p.line(0, 0, size, size);
+        p.rotate(90);
+        p.line(0, 0, size, size);
+        p.pop();
+      }
+    },
     loadScripts(){
       const P5 = require('p5');
       this.ps = new P5(this.script);
@@ -305,6 +326,18 @@ export default {
     },
     flr(p, min, max) {
       return p.floor(p.random(min, max));
+    },
+    getColor(p) {
+      return this.colorPalette.shapes[p.floor(p.random(this.nbColors))];
+    },
+    returnSize(p) {
+      return p.random(this.minSize, this.maxSize);
+    },
+    getStroke(size) {
+      return size / this.weight;
+    },
+    getAngle(p) {
+      return this.getRandom(p, -90, 90);
     }
   }
 }
