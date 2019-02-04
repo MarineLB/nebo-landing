@@ -287,21 +287,21 @@ export default {
       });
     },
     randomColor(p, check = false) {
-      let hsl = `hsl(
-          ${this.flr(p, 0, 330)},
-          ${this.flr(p, 90, 100)}%,
-          ${this.flr(p, 75, 95)}%)`;
+      let hsl = this.randomHsl(p);
       if (check) {
         let ratio;
         do {
-          hsl = `hsl(
-            ${this.flr(p, 0, 330)},
-            ${this.flr(p, 90, 100)}%,
-            ${this.flr(p, 75, 95)}%)`;
+          hsl = this.randomHsl(p);
           ratio = getContrastRatio(this.colorPalette.background, hsl);
         } while (ratio < 1.2);
       }
       return hsl;
+    },
+    randomHsl(p) {
+      return `hsl(
+          ${this.flr(p, 0, 330)},
+          ${this.flr(p, 90, 100)}%,
+          ${this.flr(p, 75, 95)}%)`;
     },
     flr(p, min, max) {
       return p.floor(p.random(min, max));
