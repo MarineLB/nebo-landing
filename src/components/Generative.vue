@@ -264,12 +264,15 @@ export default {
     randomColor(p) {
       const hsl = `
         hsl(
-          ${p.floor(p.random(0, 330))},
-          ${p.floor(p.random(90, 100))}%,
-          ${p.floor(p.random(75, 95))}%)
+          ${this.flr(p, 0, 330)},
+          ${this.flr(p, 90, 100)}%,
+          ${this.flr(p, 75, 95)}%)
         `
       ;
       return hsl;
+    },
+    flr(p, min, max) {
+      return p.floor(p.random(min, max));
     }
 
   }
