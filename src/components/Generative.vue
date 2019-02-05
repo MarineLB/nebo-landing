@@ -147,21 +147,21 @@ export default {
       const shapeY = this.getRandom(p, this.height*0.1, this.height*0.9);
       const shapeName = this.shapeList[currentShape];
       switch (shapeName) {
-        case 'square':
-          this.drawSquare(p, shapeX, shapeY);
-          break;
-        case 'circle': 
-          this.drawCircle(p, shapeX, shapeY);
-          break;
-        case 'line':
-          this.drawLine(p, shapeX, shapeY);
-          break;
-        case 'grid':
-          this.drawGrid(p, shapeX, shapeY);
-          break;
-        case 'smiley':
-          this.drawSmiley(p, shapeX, shapeY);
-          break;
+//        case 'square':
+//          this.drawSquare(p, shapeX, shapeY);
+//          break;
+//        case 'circle':
+//          this.drawCircle(p, shapeX, shapeY);
+//          break;
+//        case 'line':
+//          this.drawLine(p, shapeX, shapeY);
+//          break;
+//        case 'grid':
+//          this.drawGrid(p, shapeX, shapeY);
+//          break;
+//        case 'smiley':
+//          this.drawSmiley(p, shapeX, shapeY);
+//          break;
         case 'triangle':
           this.drawTriangle(p, shapeX, shapeY);
           break;
@@ -317,6 +317,7 @@ export default {
       p.push()
       p.stroke(color)
       p.strokeWeight(strokeWeight)
+      p.strokeCap(p.ROUND);
       p.translate(x, y)
       p.rotate(angle)
       //p.triangleMode(p.CENTER)
@@ -326,9 +327,13 @@ export default {
       } else {
         p.fill(fill)
       }
-      p.triangle(points.x1, points.y1, points.x2, points.y2, points.x3, points.y3);
+      p.line(points.x1, points.y1, points.x2, points.y2);
+      p.line(points.x2, points.y2, points.x3, points.y3);
+      p.line(points.x3, points.y3, points.x1, points.y1);
       if (hasInner) {
-        p.triangle(smallPoints.x1, smallPoints.y1, smallPoints.x2, smallPoints.y2, smallPoints.x3, smallPoints.y3)
+        p.line(smallPoints.x1, smallPoints.y1, smallPoints.x2, smallPoints.y2);
+        p.line(smallPoints.x2, smallPoints.y2, smallPoints.x3, smallPoints.y3);
+        p.line(smallPoints.x3, smallPoints.y3, smallPoints.x1, smallPoints.y1);
       }
       p.pop()
     },
