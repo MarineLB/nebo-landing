@@ -147,21 +147,21 @@ export default {
       const shapeY = this.getRandom(p, this.height*0.1, this.height*0.9);
       const shapeName = this.shapeList[currentShape];
       switch (shapeName) {
-//        case 'square':
-//          this.drawSquare(p, shapeX, shapeY);
-//          break;
-//        case 'circle':
-//          this.drawCircle(p, shapeX, shapeY);
-//          break;
-//        case 'line':
-//          this.drawLine(p, shapeX, shapeY);
-//          break;
-//        case 'grid':
-//          this.drawGrid(p, shapeX, shapeY);
-//          break;
-//        case 'smiley':
-//          this.drawSmiley(p, shapeX, shapeY);
-//          break;
+        case 'square':
+          this.drawSquare(p, shapeX, shapeY);
+          break;
+        case 'circle':
+          this.drawCircle(p, shapeX, shapeY);
+          break;
+        case 'line':
+          this.drawLine(p, shapeX, shapeY);
+          break;
+        case 'grid':
+          this.drawGrid(p, shapeX, shapeY);
+          break;
+        case 'smiley':
+          this.drawSmiley(p, shapeX, shapeY);
+          break;
         case 'triangle':
           this.drawTriangle(p, shapeX, shapeY);
           break;
@@ -358,39 +358,39 @@ export default {
     },
     drawSmiley(p, x, y) {
       const color = this.getColor(p);
-      const size = this.returnSize(p) * 2;
-      const strokeWeight = this.getStroke(size);
+      const size = this.returnSize(p);
+      const strokeWeight = this.getStroke(size) /2;
       const angle = this.getAngle(p);
       const height = this.getRandom(p, 2, 4);
 
       p.push();
-      p.fill(this.colorPalette.background);
-      p.stroke(color);
-      p.strokeWeight(strokeWeight);
-      p.translate(x, y);
-      p.rectMode(p.CENTER);
-      p.ellipse(0, 0, size, size);
+        p.fill(this.colorPalette.background);
+        p.stroke(color);
+        p.strokeWeight(strokeWeight);
+        p.translate(x, y);
+        p.rectMode(p.CENTER);
+        p.ellipse(0, 0, size, size);
       p.pop();
 
       p.push();
-      p.fill(color);
-      p.noStroke();
-      p.translate(x, y);
-      p.rotate(angle);
-      p.rectMode(p.CENTER);
-      p.ellipse(-8, -8, size * 0.1, size * 0.1);
-      p.ellipse(8, -8, size * 0.1, size * 0.1);
+        p.fill(color);
+        p.noStroke();
+        p.translate(x, y);
+        p.rotate(angle);
+        p.rectMode(p.CENTER);
+        p.ellipse(-8, -8, size * 0.1, size * 0.1);
+        p.ellipse(8, -8, size * 0.1, size * 0.1);
       p.pop();
 
       p.push();
-      p.noFill();
-      p.stroke(color);
-      p.strokeWeight(strokeWeight / 2);
-      p.strokeCap(p.ROUND);
-      p.translate(x, y);
-      p.rotate(angle);
-      p.rectMode(p.CENTER);
-      p.arc(0, 0, size / 2, size / 2, 60, 120);
+        p.noFill();
+        p.stroke(color);
+        p.strokeWeight(strokeWeight);
+        p.strokeCap(p.ROUND);
+        p.translate(x, y);
+        p.rotate(angle);
+        p.rectMode(p.CENTER);
+        p.arc(0, 0, size / 2, size / 2, 30, 150);
       p.pop();
     },
     loadScripts(){
@@ -452,7 +452,8 @@ export default {
       return p.floor(p.random(min, max));
     },
     getColor(p) {
-      return this.colorPalette.shapes[p.floor(p.random(this.nbColors))];
+      const randomIndex = p.floor(p.random(this.nbColors));
+      return this.colorPalette.shapes[randomIndex];
     },
     returnSize(p) {
       return p.random(this.minSize, this.maxSize);
