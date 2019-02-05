@@ -378,8 +378,8 @@ export default {
         p.translate(x, y);
         p.rotate(angle);
         p.rectMode(p.CENTER);
-        p.ellipse(-8, -8, size * 0.1, size * 0.1);
-        p.ellipse(8, -8, size * 0.1, size * 0.1);
+        p.ellipse(-size*0.1, -size*0.1, size * 0.1, size * 0.1);
+        p.ellipse(size*0.1, -size*0.1, size * 0.1, size * 0.1);
       p.pop();
 
       p.push();
