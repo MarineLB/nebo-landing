@@ -47,6 +47,7 @@ export default {
       script: null,
       shapeList: [
         'square',
+        'triangle',
         'circle',
         'arc',
         'line',
@@ -161,6 +162,9 @@ export default {
         case 'smiley':
           this.drawSmiley(p, shapeX, shapeY);
           break;
+        case 'triangle':
+          this.drawTriangle(p, shapeX, shapeY);
+          break;
         case 'arc': default:
           this.drawArc(p, shapeX, shapeY);
           break;
@@ -233,7 +237,7 @@ export default {
       p.rectMode(p.CENTER)
 
       if (hasInner) {
-        p.fill(this.colorPalette.background)
+        p.noFill();
       } else {
         p.fill(fill)
       }
@@ -256,7 +260,7 @@ export default {
           p.fill(color);
           p.strokeWeight(0)
         } else {
-          p.fill(this.colorPalette.background);
+          p.noFill();
           p.stroke(color)
           p.strokeWeight(strokeWeight)
         }
@@ -284,6 +288,49 @@ export default {
         p.line(0, 0, size, size);
         p.pop();
       }
+    },
+    drawTriangle(p, x, y){
+      const color = this.colorPalette.shapes[p.floor(this.getRandom(p, 0, this.nbColors))];
+      const size = this.getRandom(p, this.minSize, this.maxSize);
+      const radius = size*0.15;
+      const strokeWeight = size / (this.weight*2);
+      const fill = p.floor(this.getRandom(p, 0, 2)) === 1 ? this.colorPalette.background : color ;
+      const hasInner = p.floor(this.getRandom(p, 0, 2)) === 1;
+      const angle = this.getRandom(p, -90, 90);
+      const points = {
+        x1: 0,
+        y1: 0,
+        x2: - size/2,
+        y2: size,
+        x3: size/2,
+        y3: size
+      }
+      const smallPoints = {
+        x1: 0,
+        y1: size/2.5,
+        x2: - size/5,
+        y2: size/1.25,
+        x3: size/5,
+        y3: size/1.25
+      }
+
+      p.push()
+      p.stroke(color)
+      p.strokeWeight(strokeWeight)
+      p.translate(x, y)
+      p.rotate(angle)
+      //p.triangleMode(p.CENTER)
+
+      if (hasInner) {
+        p.noFill();
+      } else {
+        p.fill(fill)
+      }
+      p.triangle(points.x1, points.y1, points.x2, points.y2, points.x3, points.y3);
+      if (hasInner) {
+        p.triangle(smallPoints.x1, smallPoints.y1, smallPoints.x2, smallPoints.y2, smallPoints.x3, smallPoints.y3)
+      }
+      p.pop()
     },
     drawGrid(p, x, y) {
       const color = this.getColor(p);
