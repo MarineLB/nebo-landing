@@ -145,16 +145,22 @@ export default {
       switch (shapeName) {
         case 'square':
           this.drawSquare(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
+          break;
         case 'circle': 
           this.drawCircle(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
+          break;
         case 'line':
           this.drawLine(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
+          break;
         case 'grid':
           this.drawGrid(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
+          break;
         case 'smiley':
           this.drawSmiley(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
+          break;
         case 'arc': default:
           this.drawArc(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
+          break;
       }
     },
     drawNameBlock(p) {
