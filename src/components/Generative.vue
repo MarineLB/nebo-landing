@@ -57,6 +57,7 @@ export default {
       uniqueSeed: '',
       weight: 6, // bigger number === smaller weight
       width: null,
+      masterSeed: null,
 
 //      baby: {}
     }
@@ -141,25 +142,27 @@ export default {
     },
     randomShape(p) {
       const currentShape = this.getRandom(p, 0, this.shapeList.length);
+      const shapeX = this.getRandom(p, this.width*0.1, this.width*0.9);
+      const shapeY = this.getRandom(p, this.height*0.1, this.height*0.9);
       const shapeName = this.shapeList[currentShape];
       switch (shapeName) {
         case 'square':
-          this.drawSquare(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
+          this.drawSquare(p, shapeX, shapeY);
           break;
         case 'circle': 
-          this.drawCircle(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
+          this.drawCircle(p, shapeX, shapeY);
           break;
         case 'line':
-          this.drawLine(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
+          this.drawLine(p, shapeX, shapeY);
           break;
         case 'grid':
-          this.drawGrid(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
+          this.drawGrid(p, shapeX, shapeY);
           break;
         case 'smiley':
-          this.drawSmiley(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
+          this.drawSmiley(p, shapeX, shapeY);
           break;
         case 'arc': default:
-          this.drawArc(p, this.getRandom(p, this.width*0.1, this.width*0.9), this.getRandom(p, this.height*0.1, this.height*0.9));
+          this.drawArc(p, shapeX, shapeY);
           break;
       }
     },
@@ -350,14 +353,16 @@ export default {
       for (var i = 0; i < param.length; i++) {
         seed += param.charCodeAt(i) + ''
       }
+      this.masterSeed = seed;
       p.randomSeed(Number(seed));
     },
     createSeed(p, param) {
       param = this.baby[param];
-      let seed = '';
+      let seed = this.seed;
       for (var i = 0; i < param.length; i++) {
-        seed += param.charCodeAt(i) + ''
+        seed += param.charCodeAt(i)
       }
+      this.seed = seed;
       p.randomSeed(Number(seed));
     },
     /* creates a random seed from the params in baby */
