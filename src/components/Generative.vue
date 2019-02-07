@@ -36,7 +36,7 @@ export default {
       canvas: null,
       colorPalette: {
         background: '#FC97A9',
-        shapes: ['#FFFFFF', '#F4DC22', '#312E96']
+        shapes: ['#FFFFFF', '#F4DC22']
       },
       data: data.generative,
       fill: [true, false],
@@ -184,7 +184,7 @@ export default {
       p.push()
         p.textFont(this.font);
         p.strokeWeight(0)
-        p.fill(this.colorPalette.shapes[2]);
+        p.fill(this.colorPalette.shapes[0]);
         p.textSize(rect.width / 10);
         p.text(name, this.width-rect.width + (rect.width / 8), rect.y + rect.height/3.5, 200, 100);
         p.textSize(rect.width / 17);
@@ -378,23 +378,33 @@ export default {
       this.colorPalette.shapes.forEach((color, index) => {
         this.colorPalette.shapes[index] = this.randomColor(p, true);
       });
+      this.colorPalette.shapes.push(this.randomColor(p, false, true));
     },
-    randomColor(p, check = false) {
-      let hsl = this.randomHsl(p);
+    randomColor(p, check = false, light = false) {
+      let hsl = this.randomDarkHsl(p);
       if (check) {
         let ratio;
         do {
-          hsl = this.randomHsl(p);
+          hsl = this.randomDarkHsl(p);
           ratio = getContrastRatio(this.colorPalette.background, hsl);
         } while (ratio < 1.2);
       }
+      if (light) {
+        hsl = this.randomLightHsl(p);
+      }
       return hsl;
     },
-    randomHsl(p) {
+    randomLightHsl(p) {
       return `hsl(
-          ${this.flr(p, 0, 330)},
-          ${this.flr(p, 90, 100)}%,
-          ${this.flr(p, 75, 95)}%)`;
+        ${this.flr(p, 0, 330)},
+        ${this.flr(p, 90, 100)}%,
+        ${this.flr(p, 80, 100)}%)`;
+    },
+    randomDarkHsl(p) {
+      return `hsl(
+        ${this.flr(p, 0, 330)},
+        ${this.flr(p, 90, 100)}%,
+        ${this.flr(p, 55, 75)}%)`;
     },
     flr(p, min, max) {
       return p.floor(p.random(min, max));
