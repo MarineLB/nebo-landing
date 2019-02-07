@@ -498,7 +498,7 @@ export default {
       return `hsl(
         ${this.flr(p, 0, 330)},
         ${this.flr(p, 90, 100)}%,
-        ${this.flr(p, 55, 75)}%)`;
+        ${this.flr(p, 45, 65)}%)`;
     },
     flr(p, min, max) {
       return this.getRandom(p, min, max);
