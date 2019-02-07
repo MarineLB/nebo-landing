@@ -51,10 +51,10 @@ export default {
         'triangle',
         'circle',
         'arc',
-//        'line',
+        // 'line',
         'smiley',
       ],
-      shapeQuantity: 40,
+      shapeQuantity: 65,
       shapes: [],
       seed: null,
       uniqueSeed: '',
@@ -477,7 +477,7 @@ export default {
         do {
           hsl = this.randomDarkHsl(p);
           ratio = getContrastRatio(this.colorPalette.background, hsl);
-        } while (ratio < 1.8);
+        } while (ratio < 3);
       }
       if (light) {
         hsl = this.randomLightHsl(p);
@@ -494,10 +494,10 @@ export default {
       return `hsl(
         ${this.flr(p, 0, 330)},
         ${this.flr(p, 90, 100)}%,
-        ${this.flr(p, 55, 75)}%)`;
+        ${this.flr(p, 45, 65)}%)`;
     },
     flr(p, min, max) {
-      return p.floor(p.random(min, max));
+      return this.getRandom(p, min, max);
     },
     getColor(p) {
       const randomIndex = this.getRandom(p, this.nbColors);
