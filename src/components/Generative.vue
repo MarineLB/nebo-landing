@@ -157,8 +157,6 @@ export default {
         }
 
         if (!overlapping || j===0) {
-          //console.log('is not overapping');
-//          p.ellipse(shape.shapeX, shape.shapeY, shape.size, shape.size);
           this.shapes.push(shape);
         }
 
@@ -248,7 +246,6 @@ export default {
       const isEmpty = p.floor(this.getRandom(p, 0, 2)) === 1;
       const hasInner = p.floor(this.getRandom(p, 0, 2)) === 1;
       const angle = this.getRandom(p, -90, 90);
-      // drawing main square
 
       p.push()
         p.stroke(color)
@@ -412,7 +409,6 @@ export default {
 
       p.push();
         p.noFill();
-//        p.fill(this.colorPalette.background);
         p.stroke(color);
         p.strokeWeight(strokeWeight);
         p.translate(x, y);

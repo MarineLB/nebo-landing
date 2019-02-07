@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="page">
-      <!-- <Header :data="headerData"/> -->
+       <Header :data="headerData"/>
       <div class="content">
         <div class="card">
           <router-view></router-view>
