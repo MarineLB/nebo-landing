@@ -331,49 +331,51 @@ export default {
     },
     drawTriangle(p, x, y, size){
       const color = this.colorPalette.shapes[p.floor(this.getRandom(p, 0, this.nbColors))];
-      const radius = size*0.15;
       const strokeWeight = size / (this.weight*2);
       const fill = p.floor(this.getRandom(p, 0, 2)) === 1 ? this.colorPalette.background : color ;
       const hasInner = p.floor(this.getRandom(p, 0, 2)) === 1;
       const angle = this.getRandom(p, -90, 90);
+
+      let radius = size/2;
+
       const points = {
         x1: 0,
-        y1: 0,
-        x2: - size/2,
-        y2: size,
-        x3: size/2,
-        y3: size
+        y1: - radius,
+        x2: - (radius * p.cos(30)),
+        y2: radius * p.sin(30),
+        x3: radius * p.cos(30),
+        y3: radius * p.sin(30)
       }
+      const ratio = 0.4;
       const smallPoints = {
         x1: 0,
-        y1: size/2.5,
-        x2: - size/5,
-        y2: size/1.25,
-        x3: size/5,
-        y3: size/1.25
+        y1: - radius * ratio,
+        x2: - (radius * p.cos(30)) * ratio,
+        y2: (radius * p.sin(30)) * ratio,
+        x3: (radius * p.cos(30)) * ratio,
+        y3: (radius * p.sin(30)) * ratio
       }
 
       p.push()
-      p.stroke(color)
-      p.strokeWeight(strokeWeight)
-      p.strokeCap(p.ROUND);
-      p.translate(x, y)
-      p.rotate(angle)
-      //p.triangleMode(p.CENTER)
+        p.stroke(color)
+        p.strokeWeight(strokeWeight)
+        p.strokeCap(p.ROUND);
+        p.translate(x, y)
+        p.rotate(angle)
 
-      if (hasInner) {
-        p.noFill();
-      } else {
-        p.fill(fill)
-      }
-      p.line(points.x1, points.y1, points.x2, points.y2);
-      p.line(points.x2, points.y2, points.x3, points.y3);
-      p.line(points.x3, points.y3, points.x1, points.y1);
-      if (hasInner) {
-        p.line(smallPoints.x1, smallPoints.y1, smallPoints.x2, smallPoints.y2);
-        p.line(smallPoints.x2, smallPoints.y2, smallPoints.x3, smallPoints.y3);
-        p.line(smallPoints.x3, smallPoints.y3, smallPoints.x1, smallPoints.y1);
-      }
+        if (hasInner) {
+          p.noFill();
+        } else {
+          p.fill(fill)
+        }
+        p.line(points.x1, points.y1, points.x2, points.y2);
+        p.line(points.x2, points.y2, points.x3, points.y3);
+        p.line(points.x3, points.y3, points.x1, points.y1);
+        if (hasInner) {
+          p.line(smallPoints.x1, smallPoints.y1, smallPoints.x2, smallPoints.y2);
+          p.line(smallPoints.x2, smallPoints.y2, smallPoints.x3, smallPoints.y3);
+          p.line(smallPoints.x3, smallPoints.y3, smallPoints.x1, smallPoints.y1);
+        }
       p.pop()
     },
     drawGrid(p, x, y, size) {
@@ -401,7 +403,8 @@ export default {
       const height = this.getRandom(p, 2, 4);
 
       p.push();
-        p.fill(this.colorPalette.background);
+        p.noFill();
+//        p.fill(this.colorPalette.background);
         p.stroke(color);
         p.strokeWeight(strokeWeight);
         p.translate(x, y);
