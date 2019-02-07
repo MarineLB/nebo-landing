@@ -47,12 +47,14 @@ export default {
       script: null,
       shapeList: [
         'square',
+        'triangle',
         'circle',
         'arc',
         'line',
         'smiley',
       ],
-      shapeQuantity: 14,
+      shapeQuantity: 15,
+      shapes: [],
       seed: null,
       uniqueSeed: '',
       weight: 6, // bigger number === smaller weight
@@ -125,45 +127,88 @@ export default {
       this.createMasterSeed(p);
 
       this.createPalette(p);
-
-      // todo : generate a colorPalette from master seed
       p.background(this.colorPalette.background)
 
-      // todo : replace random() to generate random with a random seed from this.baby (depending on master seed)
+      // select shape and verify that they are not overlapping
+      this.selectShapes(p);
 
-
-      // todo : select shapes and draw them
-      for (let i = 0; i < this.shapeQuantity; i++) {
-        this.randomShape(p);
-      }
+      this.drawAllShapes(p);
 
       // drawing last so that it's above everything
       this.drawNameBlock(p);
     },
+    selectShapes(p){
+      let overlapping = false;
+      let protection = 0;
+
+      while (this.shapes.length < this.shapeQuantity) {
+        const shape = this.randomShape(p); //{x, y, s}
+
+
+        for (var j = 0; j < this.shapes.length; j++) {
+          var other = this.shapes[j];
+          var d = p.dist(shape.shapeX, shape.shapeY, other.shapeX, other.shapeY);
+          if (d < shape.size/2 + other.size/2) {
+            overlapping = true;
+          }
+        }
+
+        if (!overlapping) {
+          console.log('is not overapping');
+          this.shapes.push(shape);
+        }
+
+        protection++;
+        if(protection > 5000) {
+          break;
+        }
+      }
+    },
     randomShape(p) {
       const currentShape = this.getRandom(p, 0, this.shapeList.length);
+      const shapeName = this.shapeList[currentShape];
       const shapeX = this.getRandom(p, this.width*0.1, this.width*0.9);
       const shapeY = this.getRandom(p, this.height*0.1, this.height*0.9);
-      const shapeName = this.shapeList[currentShape];
-      switch (shapeName) {
-        case 'square':
-          this.drawSquare(p, shapeX, shapeY);
+
+      let shape;
+      let size = this.getShapeSize(p);
+
+      size = (shapeName === 'line' || shapeName === 'grid') ? size/2 : size;
+      shape = {
+        shapeName,
+        shapeX,
+        shapeY,
+        size,
+      }
+      return shape;
+    },
+    drawAllShapes(p){
+      for (let i = 0; i < this.shapes.length; i++) {
+        const shape = this.shapes[i];
+
+        switch (shape.shapeName) {
+          case 'square':
+            this.drawSquare(p, shape.shapeX, shape.shapeY, shape.size);
+            break;
+          case 'circle':
+            this.drawCircle(p, shape.shapeX, shape.shapeY, shape.size);
+            break;
+          case 'line':
+            this.drawLine(p, shape.shapeX, shape.shapeY, shape.size);
+            break;
+          case 'grid':
+            this.drawGrid(p, shape.shapeX, shape.shapeY, shape.size);
+            break;
+          case 'smiley':
+            this.drawSmiley(p, shape.shapeX, shape.shapeY, shape.size);
+            break;
+          case 'triangle':
+            this.drawTriangle(p, shape.shapeX, shape.shapeY, shape.size);
+            break;
+          case 'arc': default:
+          this.drawArc(p, shape.shapeX, shape.shapeY, shape.size);
           break;
-        case 'circle': 
-          this.drawCircle(p, shapeX, shapeY);
-          break;
-        case 'line':
-          this.drawLine(p, shapeX, shapeY);
-          break;
-        case 'grid':
-          this.drawGrid(p, shapeX, shapeY);
-          break;
-        case 'smiley':
-          this.drawSmiley(p, shapeX, shapeY);
-          break;
-        case 'arc': default:
-          this.drawArc(p, shapeX, shapeY);
-          break;
+        }
       }
     },
     drawNameBlock(p) {
@@ -191,9 +236,8 @@ export default {
         p.text(date, this.width-rect.width + (rect.width / 8), rect.y + rect.height/1.75, 200, 100);
       p.pop();
     },
-    drawSquare(p, x, y){
+    drawSquare(p, x, y, size){
       const color = this.colorPalette.shapes[p.floor(this.getRandom(p, 0, this.nbColors))];
-      const size = this.getRandom(p, this.minSize, this.maxSize);
       const radius = size*0.15;
       const strokeWeight = size / this.weight;
       const fill = p.floor(this.getRandom(p, 0, 2)) === 1 ? this.colorPalette.background : color ;
@@ -219,9 +263,8 @@ export default {
         }
       p.pop()
     },
-    drawCircle(p, x, y){
+    drawCircle(p, x, y, size){
       const color = this.colorPalette.shapes[p.floor(p.random(this.nbColors))];
-      const size = p.random(this.minSize, this.maxSize);
       const strokeWeight = size / this.weight;
       const fill = p.floor(p.random(2)) === 1 ? this.colorPalette.background : color ;
       const hasInner = p.floor(p.random(2)) === 1;
@@ -233,7 +276,7 @@ export default {
       p.rectMode(p.CENTER)
 
       if (hasInner) {
-        p.fill(this.colorPalette.background)
+        p.noFill();
       } else {
         p.fill(fill)
       }
@@ -243,9 +286,8 @@ export default {
       }
       p.pop()
     },
-    drawArc(p, x, y) {
+    drawArc(p, x, y, size) {
       const color = this.colorPalette.shapes[p.floor(p.random(this.nbColors))];
-      const size = p.random(this.minSize, this.maxSize);
       const strokeWeight = size / this.weight;
       const length = p.floor(p.random(2)) === 1 ? 90 : 180;
       const isFull = p.floor(p.random(2)) === 1;
@@ -256,7 +298,7 @@ export default {
           p.fill(color);
           p.strokeWeight(0)
         } else {
-          p.fill(this.colorPalette.background);
+          p.noFill();
           p.stroke(color)
           p.strokeWeight(strokeWeight)
         }
@@ -266,9 +308,8 @@ export default {
         p.arc(0, 0, size, size, 0, length)
       p.pop()
     },
-    drawLine(p, x, y) {
+    drawLine(p, x, y, size) {
       const color = this.getColor(p);
-      const size = this.returnSize(p) / 2;
       const strokeWeight = this.getStroke(size);
       const angle = this.getAngle(p);
       const quantity = this.getRandom(p, 2, 3);
@@ -285,9 +326,55 @@ export default {
         p.pop();
       }
     },
-    drawGrid(p, x, y) {
+    drawTriangle(p, x, y, size){
+      const color = this.colorPalette.shapes[p.floor(this.getRandom(p, 0, this.nbColors))];
+      const radius = size*0.15;
+      const strokeWeight = size / (this.weight*2);
+      const fill = p.floor(this.getRandom(p, 0, 2)) === 1 ? this.colorPalette.background : color ;
+      const hasInner = p.floor(this.getRandom(p, 0, 2)) === 1;
+      const angle = this.getRandom(p, -90, 90);
+      const points = {
+        x1: 0,
+        y1: 0,
+        x2: - size/2,
+        y2: size,
+        x3: size/2,
+        y3: size
+      }
+      const smallPoints = {
+        x1: 0,
+        y1: size/2.5,
+        x2: - size/5,
+        y2: size/1.25,
+        x3: size/5,
+        y3: size/1.25
+      }
+
+      p.push()
+      p.stroke(color)
+      p.strokeWeight(strokeWeight)
+      p.strokeCap(p.ROUND);
+      p.translate(x, y)
+      p.rotate(angle)
+      //p.triangleMode(p.CENTER)
+
+      if (hasInner) {
+        p.noFill();
+      } else {
+        p.fill(fill)
+      }
+      p.line(points.x1, points.y1, points.x2, points.y2);
+      p.line(points.x2, points.y2, points.x3, points.y3);
+      p.line(points.x3, points.y3, points.x1, points.y1);
+      if (hasInner) {
+        p.line(smallPoints.x1, smallPoints.y1, smallPoints.x2, smallPoints.y2);
+        p.line(smallPoints.x2, smallPoints.y2, smallPoints.x3, smallPoints.y3);
+        p.line(smallPoints.x3, smallPoints.y3, smallPoints.x1, smallPoints.y1);
+      }
+      p.pop()
+    },
+    drawGrid(p, x, y, size) {
       const color = this.getColor(p);
-      const size = this.returnSize(p) / 2;
       const strokeWeight = this.getStroke(size);
       const angle = this.getAngle(p);
       const height = this.getRandom(p, 2, 4);
@@ -304,41 +391,40 @@ export default {
         }
       }
     },
-    drawSmiley(p, x, y) {
+    drawSmiley(p, x, y, size) {
       const color = this.getColor(p);
-      const size = this.returnSize(p) * 2;
-      const strokeWeight = this.getStroke(size);
+      const strokeWeight = this.getStroke(size) /2;
       const angle = this.getAngle(p);
       const height = this.getRandom(p, 2, 4);
 
       p.push();
-      p.fill(this.colorPalette.background);
-      p.stroke(color);
-      p.strokeWeight(strokeWeight);
-      p.translate(x, y);
-      p.rectMode(p.CENTER);
-      p.ellipse(0, 0, size, size);
+        p.fill(this.colorPalette.background);
+        p.stroke(color);
+        p.strokeWeight(strokeWeight);
+        p.translate(x, y);
+        p.rectMode(p.CENTER);
+        p.ellipse(0, 0, size, size);
       p.pop();
 
       p.push();
-      p.fill(color);
-      p.noStroke();
-      p.translate(x, y);
-      p.rotate(angle);
-      p.rectMode(p.CENTER);
-      p.ellipse(-8, -8, size * 0.1, size * 0.1);
-      p.ellipse(8, -8, size * 0.1, size * 0.1);
+        p.fill(color);
+        p.noStroke();
+        p.translate(x, y);
+        p.rotate(angle);
+        p.rectMode(p.CENTER);
+        p.ellipse(-size*0.1, -size*0.1, size * 0.1, size * 0.1);
+        p.ellipse(size*0.1, -size*0.1, size * 0.1, size * 0.1);
       p.pop();
 
       p.push();
-      p.noFill();
-      p.stroke(color);
-      p.strokeWeight(strokeWeight / 2);
-      p.strokeCap(p.ROUND);
-      p.translate(x, y);
-      p.rotate(angle);
-      p.rectMode(p.CENTER);
-      p.arc(0, 0, size / 2, size / 2, 60, 120);
+        p.noFill();
+        p.stroke(color);
+        p.strokeWeight(strokeWeight);
+        p.strokeCap(p.ROUND);
+        p.translate(x, y);
+        p.rotate(angle);
+        p.rectMode(p.CENTER);
+        p.arc(0, 0, size / 2, size / 2, 30, 150);
       p.pop();
     },
     loadScripts(){
@@ -410,9 +496,10 @@ export default {
       return p.floor(p.random(min, max));
     },
     getColor(p) {
-      return this.colorPalette.shapes[p.floor(p.random(this.nbColors))];
+      const randomIndex = p.floor(p.random(this.nbColors));
+      return this.colorPalette.shapes[randomIndex];
     },
-    returnSize(p) {
+    getShapeSize(p) {
       return p.random(this.minSize, this.maxSize);
     },
     getStroke(size) {
