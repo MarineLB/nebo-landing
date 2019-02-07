@@ -50,10 +50,10 @@ export default {
         'triangle',
         'circle',
         'arc',
-        'line',
+        // 'line',
         'smiley',
       ],
-      shapeQuantity: 50,
+      shapeQuantity: 65,
       shapes: [],
       seed: null,
       uniqueSeed: '',
@@ -149,7 +149,7 @@ export default {
           var other = this.shapes[j];
           var d = p.dist(shape.shapeX, shape.shapeY, other.shapeX, other.shapeY);
           
-          if (d < shape.size/2 + other.size/2) {
+          if (d - 15 < shape.size/2 + other.size/2) {
             overlapping = true;
           }
           
@@ -157,7 +157,7 @@ export default {
 
         if (!overlapping || j===0) {
           //console.log('is not overapping');
-          p.ellipse(shape.shapeX, shape.shapeY, shape.size, shape.size);
+          // p.ellipse(shape.shapeX, shape.shapeY, shape.size, shape.size);
           this.shapes.push(shape);
         }
 
@@ -473,7 +473,7 @@ export default {
         do {
           hsl = this.randomDarkHsl(p);
           ratio = getContrastRatio(this.colorPalette.background, hsl);
-        } while (ratio < 1.8);
+        } while (ratio < 3);
       }
       if (light) {
         hsl = this.randomLightHsl(p);
@@ -493,7 +493,7 @@ export default {
         ${this.flr(p, 55, 75)}%)`;
     },
     flr(p, min, max) {
-      return p.floor(p.random(min, max));
+      return this.getRandom(p, min, max);
     },
     getColor(p) {
       const randomIndex = this.getRandom(p, this.nbColors);
