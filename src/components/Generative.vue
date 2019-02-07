@@ -438,7 +438,7 @@ export default {
      * gives us a number */
     createMasterSeed(p){
       let seed = 0;
-      const param = this.baby['first-name'] + this.baby['last-name'] + this.baby['date'] + this.baby['time'];
+      const param = this.baby['first-name'].toLowerCase() + this.baby['last-name'].toLowerCase() + this.baby['date'] + this.baby['time'];
       for (var i = 0; i < param.length; i++) {
         seed += param.charCodeAt(i)
       }
