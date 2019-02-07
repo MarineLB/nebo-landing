@@ -51,17 +51,10 @@ export default {
         'triangle',
         'circle',
         'arc',
-<<<<<<< HEAD
         // 'line',
         'smiley',
       ],
       shapeQuantity: 65,
-=======
-//        'line',
-        'smiley',
-      ],
-      shapeQuantity: 40,
->>>>>>> 22160fe890f43fbc0a159de95cd24cc0cb4e4e31
       shapes: [],
       seed: null,
       uniqueSeed: '',
