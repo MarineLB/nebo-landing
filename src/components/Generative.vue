@@ -5,17 +5,6 @@
       <button
         class="generative-identity__button">Save as png</button>
     </div>
-    <div class="data">
-      <hr>
-      <h2>data</h2>
-      first name : {{ baby['first-name'] }} <br>
-      last name : {{ baby['last-name'] }}<br>
-      date of birth : {{ baby.date }}<br>
-      time of birth : {{ baby.time }}<br>
-      height : {{ baby.height }} (cm)<br>
-      weight : {{ baby.weight }} (kg)<br>
-      {{ uniqueSeed }}<br>
-    </div>
 
   </div>
 </template>
@@ -58,11 +47,10 @@ export default {
       shapes: [],
       seed: null,
       uniqueSeed: '',
-      weight: 6, // bigger number === smaller weight
+      weight: 6,
       width: null,
       masterSeed: null,
 
-//      baby: {}
     }
   },
   computed:{
@@ -81,8 +69,6 @@ export default {
   },
   mounted() {
     this.baby = this.$route.query;
-//    this.getUniqueString();
-//    this.bigString = this.createSeed(this.bigString);
     this.initP5();
     this.loadScripts();
   },
@@ -124,27 +110,19 @@ export default {
       p.noLoop();
     },
     draw(p){
-      // todo : create master seed with prenom + nom
       this.createMasterSeed(p);
-
       this.createPalette(p);
       p.background(this.colorPalette.background)
-
-      // select shape and verify that they are not overlapping
       this.selectShapes(p);
-
       this.drawAllShapes(p);
-
-      // drawing last so that it's above everything
       this.drawNameBlock(p);
     },
     selectShapes(p){
-      
       let protection = 0;
 
       while (this.shapes.length < this.shapeQuantity) {
         let overlapping = false;
-        const shape = this.randomShape(p); //{x, y, s}
+        const shape = this.randomShape(p);
 
         for (var j = 0; j < this.shapes.length; j++) {
           var other = this.shapes[j];
@@ -153,7 +131,6 @@ export default {
           if (d < (shape.size/2 + other.size/2) * this.shapePadding ) {
             overlapping = true;
           }
-          
         }
 
         if (!overlapping || j===0) {
@@ -405,7 +382,6 @@ export default {
       const color = this.getColor(p);
       const strokeWeight = this.getStroke(size) /2;
       const angle = this.getAngle(p);
-      const height = this.getRandom(p, 2, 4);
 
       p.push();
         p.noFill();
@@ -445,12 +421,10 @@ export default {
      * gives us a number */
     createMasterSeed(p){
       let seed = 0;
-      const param = this.baby['first-name'].toLowerCase() + this.baby['last-name'].toLowerCase() + this.baby['date'] + this.baby['time'];
+      const param = this.baby['first-name'].toLowerCase() + this.baby['last-name'].toLowerCase() + this.baby['date'] + this.baby['time'] + this.baby['weight'] + this.baby['height'];
       for (var i = 0; i < param.length; i++) {
         seed += param.charCodeAt(i)
       }
-      seed = Number(seed);
-      seed = seed + this.baby['weight'] + this.baby['height'];
       this.masterSeed = seed;
       p.randomSeed(Number(seed));
     },
