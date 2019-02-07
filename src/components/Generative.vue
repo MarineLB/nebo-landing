@@ -50,10 +50,10 @@ export default {
         'triangle',
         'circle',
         'arc',
-        'line',
+//        'line',
         'smiley',
       ],
-      shapeQuantity: 50,
+      shapeQuantity: 200,
       shapes: [],
       seed: null,
       uniqueSeed: '',
@@ -69,10 +69,10 @@ export default {
       return require('../assets/Quicksand.ttf')
     },
     minSize() {
-      return this.width/9;
+      return this.width/20;
     },
     maxSize() {
-      return this.width/6;
+      return this.width/5;
     },
     nbColors() {
       return this.colorPalette.shapes.length;
@@ -157,7 +157,7 @@ export default {
 
         if (!overlapping || j===0) {
           //console.log('is not overapping');
-          p.ellipse(shape.shapeX, shape.shapeY, shape.size, shape.size);
+//          p.ellipse(shape.shapeX, shape.shapeY, shape.size, shape.size);
           this.shapes.push(shape);
         }
 
@@ -244,7 +244,7 @@ export default {
       const color = this.colorPalette.shapes[p.floor(this.getRandom(p, 0, this.nbColors))];
       const radius = size*0.15;
       const strokeWeight = size / this.weight;
-      const fill = p.floor(this.getRandom(p, 0, 2)) === 1 ? this.colorPalette.background : color ;
+      const isEmpty = p.floor(this.getRandom(p, 0, 2)) === 1;
       const hasInner = p.floor(this.getRandom(p, 0, 2)) === 1;
       const angle = this.getRandom(p, -90, 90);
       // drawing main square
@@ -259,10 +259,10 @@ export default {
         if (hasInner) {
           p.noFill()
         } else {
-          p.fill(fill)
+          p.fill(color);
         }
         p.rect(0, 0, size, size, radius)
-        if (hasInner) {
+        if (hasInner && !isEmpty) {
           p.rect(0, 0, size/2.5, size/2.5, radius/2.5)
         }
       p.pop()
@@ -271,7 +271,7 @@ export default {
       const size = s * 0.8;
       const color = this.colorPalette.shapes[p.floor(p.random(this.nbColors))];
       const strokeWeight = size / this.weight;
-      const fill = p.floor(p.random(2)) === 1 ? this.colorPalette.background : color ;
+      const isEmpty = p.floor(this.getRandom(p, 0, 2)) === 1;
       const hasInner = p.floor(p.random(2)) === 1;
 
       p.push()
@@ -280,13 +280,13 @@ export default {
       p.translate(x, y)
       p.rectMode(p.CENTER)
 
-      if (hasInner) {
-        p.noFill();
+      if (hasInner || isEmpty) {
+        p.noFill()
       } else {
-        p.fill(fill)
+        p.fill(color);
       }
       p.ellipse(0, 0, size, size)
-      if (hasInner) {
+      if (hasInner && !isEmpty) {
         p.ellipse(0, 0, size/2.5, size/2.5)
       }
       p.pop()
@@ -337,7 +337,7 @@ export default {
       const size = s * 0.9;
       const color = this.colorPalette.shapes[p.floor(this.getRandom(p, 0, this.nbColors))];
       const strokeWeight = size / (this.weight*2);
-      const fill = p.floor(this.getRandom(p, 0, 2)) === 1 ? this.colorPalette.background : color ;
+      const isEmpty = p.floor(this.getRandom(p, 0, 2)) === 1;
       const hasInner = p.floor(this.getRandom(p, 0, 2)) === 1;
       const angle = this.getRandom(p, -90, 90);
 
@@ -368,15 +368,16 @@ export default {
         p.translate(x, y)
         p.rotate(angle)
 
-        if (hasInner) {
+        if (hasInner || isEmpty) {
           p.noFill();
         } else {
-          p.fill(fill)
+          p.fill(color)
         }
-        p.line(points.x1, points.y1, points.x2, points.y2);
-        p.line(points.x2, points.y2, points.x3, points.y3);
-        p.line(points.x3, points.y3, points.x1, points.y1);
-        if (hasInner) {
+        p.beginShape();
+          p.line(points.x1, points.y1, points.x2, points.y2);
+          p.line(points.x2, points.y2, points.x3, points.y3);
+          p.line(points.x3, points.y3, points.x1, points.y1);
+        if (hasInner && !isEmpty) {
           p.line(smallPoints.x1, smallPoints.y1, smallPoints.x2, smallPoints.y2);
           p.line(smallPoints.x2, smallPoints.y2, smallPoints.x3, smallPoints.y3);
           p.line(smallPoints.x3, smallPoints.y3, smallPoints.x1, smallPoints.y1);
