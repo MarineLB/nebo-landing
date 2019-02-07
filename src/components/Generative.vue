@@ -45,6 +45,7 @@ export default {
       p: null,
       ps: null,
       script: null,
+      shapePadding: 1.2,
       shapeList: [
         'square',
         'triangle',
@@ -53,7 +54,7 @@ export default {
 //        'line',
         'smiley',
       ],
-      shapeQuantity: 200,
+      shapeQuantity: 40,
       shapes: [],
       seed: null,
       uniqueSeed: '',
@@ -149,7 +150,7 @@ export default {
           var other = this.shapes[j];
           var d = p.dist(shape.shapeX, shape.shapeY, other.shapeX, other.shapeY);
           
-          if (d < shape.size/2 + other.size/2) {
+          if (d < (shape.size/2 + other.size/2) * this.shapePadding ) {
             overlapping = true;
           }
           
