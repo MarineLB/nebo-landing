@@ -53,7 +53,7 @@ export default {
         'line',
         'smiley',
       ],
-      shapeQuantity: 15,
+      shapeQuantity: 50,
       shapes: [],
       seed: null,
       uniqueSeed: '',
@@ -69,10 +69,10 @@ export default {
       return require('../assets/Quicksand.ttf')
     },
     minSize() {
-      return this.width/25;
+      return this.width/9;
     },
     maxSize() {
-      return this.width/5;
+      return this.width/6;
     },
     nbColors() {
       return this.colorPalette.shapes.length;
@@ -138,28 +138,31 @@ export default {
       this.drawNameBlock(p);
     },
     selectShapes(p){
-      let overlapping = false;
+      
       let protection = 0;
 
       while (this.shapes.length < this.shapeQuantity) {
+        let overlapping = false;
         const shape = this.randomShape(p); //{x, y, s}
-
 
         for (var j = 0; j < this.shapes.length; j++) {
           var other = this.shapes[j];
           var d = p.dist(shape.shapeX, shape.shapeY, other.shapeX, other.shapeY);
+          
           if (d < shape.size/2 + other.size/2) {
             overlapping = true;
           }
+          
         }
 
-        if (!overlapping) {
-          console.log('is not overapping');
+        if (!overlapping || j===0) {
+          //console.log('is not overapping');
+          p.ellipse(shape.shapeX, shape.shapeY, shape.size, shape.size);
           this.shapes.push(shape);
         }
 
         protection++;
-        if(protection > 5000) {
+        if(protection > 1000) {
           break;
         }
       }
@@ -167,8 +170,8 @@ export default {
     randomShape(p) {
       const currentShape = this.getRandom(p, 0, this.shapeList.length);
       const shapeName = this.shapeList[currentShape];
-      const shapeX = this.getRandom(p, this.width*0.1, this.width*0.9);
-      const shapeY = this.getRandom(p, this.height*0.1, this.height*0.9);
+      const shapeX = p.random(this.width*-0.1, this.width);
+      const shapeY = p.random(this.height*-0.1, this.height);
 
       let shape;
       let size = this.getShapeSize(p);
@@ -253,7 +256,7 @@ export default {
         p.rectMode(p.CENTER)
 
         if (hasInner) {
-          p.fill(this.colorPalette.background)
+          p.noFill()
         } else {
           p.fill(fill)
         }
@@ -434,29 +437,25 @@ export default {
     /* transform each character by its ASCII code
      * gives us a number */
     createMasterSeed(p){
-      let seed = '';
-      const param = this.baby['first-name'] + this.baby['last-name'];
-      for (var i = 0; i < param.length; i++) {
-        seed += param.charCodeAt(i) + ''
-      }
-      this.masterSeed = seed;
-      p.randomSeed(Number(seed));
-    },
-    createSeed(p, param) {
-      param = this.baby[param];
-      let seed = this.seed;
+      let seed = 0;
+      const param = this.baby['first-name'] + this.baby['last-name'] + this.baby['date'] + this.baby['time'];
       for (var i = 0; i < param.length; i++) {
         seed += param.charCodeAt(i)
       }
-      this.seed = seed;
+      seed = Number(seed);
+      seed = p.floor(seed / 100);
+      console.log(seed);
+      seed = seed + this.baby['weight'] + this.baby['height'];
+      this.masterSeed = seed;
       p.randomSeed(Number(seed));
+    },
+    createSeed(p, param = null) {
+      this.seed = p.floor(p.random(20000));
+      p.randomSeed(Number(this.seed));
     },
     /* creates a random seed from the params in baby */
     getRandom(p, min, max) {
-      const keys = Object.keys(this.baby)
-      const randomParamIndex = p.floor(p.random(keys.length))
-      const randomParam = keys[randomParamIndex];
-      this.createSeed(p, randomParam);
+      this.createSeed(p);
       return p.floor(p.random(min, max));
     },
     createPalette(p) {
@@ -473,7 +472,7 @@ export default {
         do {
           hsl = this.randomDarkHsl(p);
           ratio = getContrastRatio(this.colorPalette.background, hsl);
-        } while (ratio < 1.2);
+        } while (ratio < 1.8);
       }
       if (light) {
         hsl = this.randomLightHsl(p);
@@ -496,11 +495,11 @@ export default {
       return p.floor(p.random(min, max));
     },
     getColor(p) {
-      const randomIndex = p.floor(p.random(this.nbColors));
+      const randomIndex = this.getRandom(p, this.nbColors);
       return this.colorPalette.shapes[randomIndex];
     },
     getShapeSize(p) {
-      return p.random(this.minSize, this.maxSize);
+      return this.getRandom(p, this.minSize, this.maxSize);
     },
     getStroke(size) {
       return size / this.weight;
