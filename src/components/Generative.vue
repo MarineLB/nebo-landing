@@ -443,8 +443,6 @@ export default {
         seed += param.charCodeAt(i)
       }
       seed = Number(seed);
-      seed = p.floor(seed / 100);
-      console.log(seed);
       seed = seed + this.baby['weight'] + this.baby['height'];
       this.masterSeed = seed;
       p.randomSeed(Number(seed));
