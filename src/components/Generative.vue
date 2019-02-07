@@ -239,7 +239,8 @@ export default {
         p.text(date, this.width-rect.width + (rect.width / 8), rect.y + rect.height/1.75, 200, 100);
       p.pop();
     },
-    drawSquare(p, x, y, size){
+    drawSquare(p, x, y, s){
+      const size = s * 0.7;
       const color = this.colorPalette.shapes[p.floor(this.getRandom(p, 0, this.nbColors))];
       const radius = size*0.15;
       const strokeWeight = size / this.weight;
@@ -266,7 +267,8 @@ export default {
         }
       p.pop()
     },
-    drawCircle(p, x, y, size){
+    drawCircle(p, x, y, s){
+      const size = s * 0.8;
       const color = this.colorPalette.shapes[p.floor(p.random(this.nbColors))];
       const strokeWeight = size / this.weight;
       const fill = p.floor(p.random(2)) === 1 ? this.colorPalette.background : color ;
@@ -289,7 +291,8 @@ export default {
       }
       p.pop()
     },
-    drawArc(p, x, y, size) {
+    drawArc(p, x, y, s) {
+      const size = s * 0.8;
       const color = this.colorPalette.shapes[p.floor(p.random(this.nbColors))];
       const strokeWeight = size / this.weight;
       const length = p.floor(p.random(2)) === 1 ? 90 : 180;
@@ -302,9 +305,10 @@ export default {
           p.strokeWeight(0)
         } else {
           p.noFill();
-          p.stroke(color)
           p.strokeWeight(strokeWeight)
         }
+        p.stroke(color)
+
         p.translate(x, y)
         p.rotate(angle)
         p.ellipseMode(p.CENTER)
@@ -329,7 +333,8 @@ export default {
         p.pop();
       }
     },
-    drawTriangle(p, x, y, size){
+    drawTriangle(p, x, y, s){
+      const size = s * 0.9;
       const color = this.colorPalette.shapes[p.floor(this.getRandom(p, 0, this.nbColors))];
       const strokeWeight = size / (this.weight*2);
       const fill = p.floor(this.getRandom(p, 0, 2)) === 1 ? this.colorPalette.background : color ;
@@ -396,7 +401,8 @@ export default {
         }
       }
     },
-    drawSmiley(p, x, y, size) {
+    drawSmiley(p, x, y, s) {
+      const size = s * 0.9;
       const color = this.getColor(p);
       const strokeWeight = this.getStroke(size) /2;
       const angle = this.getAngle(p);
