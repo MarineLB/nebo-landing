@@ -88,6 +88,10 @@ export default {
         p.draw = _ => {
           this.draw(p);
         }
+
+        p.keyTyped = _ => {
+          this.keyTyped(p);
+        }
       }
     },
     getSize() {
@@ -116,6 +120,11 @@ export default {
       this.selectShapes(p);
       this.drawAllShapes(p);
       this.drawNameBlock(p);
+    },
+    keyTyped(p) {
+      if (p.key === 's') {
+        p.saveCanvas(`${this.baby['first-name']}`, 'png');
+      }
     },
     selectShapes(p){
       let protection = 0;
